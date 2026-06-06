@@ -1,0 +1,69 @@
+# At most K distinct elements
+# Method 1 (904. Fruit Into Baskets)
+
+class Solution {
+public:
+    int totalFruit(vector<int>& fruits) {
+        int n = fruits.size();
+        int type1 = fruits[0];
+        int type2 = fruits[0];
+        int i =0;
+        int j =0;
+        int k =0;
+        int len =0;
+        int maxi =0;
+        while(j <n){
+            if(fruits[j] == type1 || fruits[j] == type2){
+                if(fruits[k] != fruits[j]) k=j;
+                len++;
+                maxi = max(maxi,len);
+                j++;
+            }else{
+                type1 = fruits[k];
+                type2 = fruits[j];
+                i = k;
+                len = j-i+1;
+                maxi = max(maxi,len);
+                k = j++;
+            }
+        }
+        return maxi;
+    }
+};
+
+# Method 2 (general template) (using unordered map)
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    string s = "aabacbebebe";
+    int k = 3;
+
+    unordered_map<char, int> mp;
+
+    int i = 0, j = 0;
+    int maxi = 0;
+
+    while(j < s.size())
+    {
+        mp[s[j]]++;
+
+        while(mp.size() > k)
+        {
+            mp[s[i]]--;
+
+            if(mp[s[i]] == 0)
+                mp.erase(s[i]);
+
+            i++;
+        }
+
+        maxi = max(maxi, j - i + 1);
+
+        j++;
+    }
+
+    cout << maxi;
+}
